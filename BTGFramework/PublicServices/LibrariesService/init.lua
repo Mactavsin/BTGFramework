@@ -5,6 +5,8 @@ local LibrariesServiceModule = {}
 local Libraries = {}
 Libraries.Convert = require(script.Convert)
 Libraries.Object = require(script.Object)
+Libraries.Color3 = require(script.Color3)
+Libraries.Math = require(script.Math)
 
 --//Public Functions
 function LibrariesServiceModule.GetLibrary(LibraryName) 
