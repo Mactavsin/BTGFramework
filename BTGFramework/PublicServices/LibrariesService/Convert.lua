@@ -78,11 +78,11 @@ function _FromJSONStringToTable(Table)
 end
 
 --//Public Functions
-function ConvertModule.ToString(Input)
+ConvertModule.ToString = function(Input)
     return tostring(Input)
 end
 
-function ConvertModule.ToNumber(Input, Base)
+ConvertModule.ToNumber = function(Input, Base)
     Base = (type(Base) == "number" and Base) or 10
     local InputType = typeof(Input)
     if InputType == "boolean" then
@@ -104,7 +104,7 @@ function ConvertModule.ToNumber(Input, Base)
     end
 end
 
-function ConvertModule.ToBoolean(Input)
+ConvertModule.ToBoolean = function(Input)
     local InputType = type(Input)
     if InputType == "string" then
         Input = string.match(string.lower(Input), "^%s*(%w+)%s*$")
@@ -124,7 +124,7 @@ function ConvertModule.ToBoolean(Input)
     end
 end
 
-function ConvertModule.FromTableToJSONString(Input, IgnoreInstances)
+ConvertModule.FromTableToJSONString = function(Input, IgnoreInstances)
     IgnoreInstances = (type(IgnoreInstances) == "boolean" and IgnoreInstances) or true
     if type(Input) == "table" then 
         local BlacklistTable = {}
@@ -134,7 +134,7 @@ function ConvertModule.FromTableToJSONString(Input, IgnoreInstances)
     end
 end
 
-function ConvertModule.FromJSONStringToTable(Input)
+ConvertModule.FromJSONStringToTable = function(Input)
     if type(Input) == "string" then 
         return _FromJSONStringToTable(HTTPService:JSONDecode(Input))
     else
@@ -142,16 +142,16 @@ function ConvertModule.FromJSONStringToTable(Input)
     end
 end
 
-function ConvertModule.FromInstanceToTable(Object, IsJSONCompatible)
+ConvertModule.FromInstanceToTable = function(Object, IsJSONCompatible)
     IsJSONCompatible = (type(IsJSONCompatible) == "boolean" and IsJSONCompatible) or false
-    if typeof(Object) == "Instance" and ClassTable[Object.ClassName] ~= nil and ClassTable[Object.ClassName].IsCreatable == true and table.find(ClassTableIgnore, Object.ClassName) == nil then 
+    if typeof(Object) == "Instance" then 
         return _FromInstanceToTable(Object, Object.ClassName, {ClassName = Object.ClassName}, IsJSONCompatible)
     else
         return nil
     end
 end
 
-function ConvertModule.FromTableToInstance(Table)
+ConvertModule.FromTableToInstance = function(Table)
     if type(Table) == "table" and ClassTable[Table.ClassName] ~= nil and ClassTable[Table.ClassName].IsCreatable == true and table.find(ClassTableIgnore, Table.ClassName) == nil then 
         return _FromTableToInstance(Table, Table.ClassName, Instance.new(Table.ClassName))
     else
@@ -159,11 +159,11 @@ function ConvertModule.FromTableToInstance(Table)
     end
 end
 
-function ConvertModule.FromDatatypeToTable(UserData)
+ConvertModule.FromDatatypeToTable = function(UserData)
     return (DatatypeTable[typeof(UserData)] ~= nil and DatatypeTable[typeof(UserData)].ToTable(UserData)) or nil
 end
 
-function ConvertModule.FromTableToDatatype(Table)
+ConvertModule.FromTableToDatatype = function(Table)
     if type(Table) == "table" then 
         return (DatatypeTable[Table.Datatype] ~= nil and DatatypeTable[Table.Datatype].FromTable(Table)) or nil
     else
