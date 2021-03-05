@@ -2,7 +2,7 @@
 local MathModule = {}
 
 --//Private functions
-function _GeneralFunction(Operation, ...)
+function _GetModifiedMathFunction(Operation, ...)
     return function(...)
         local Result = {}
         for Index, Value in ipairs({...}) do 
@@ -33,26 +33,26 @@ MathModule.noise = math.noise
 MathModule.pow = math.pow
 MathModule.random = math.random
 MathModule.randomseed = math.randomseed
-MathModule.ceil = _GeneralFunction("ceil")
-MathModule.cos = _GeneralFunction("cos")
-MathModule.cosh = _GeneralFunction("cosh")
-MathModule.deg = _GeneralFunction("deg")
-MathModule.exp = _GeneralFunction("exp")
-MathModule.floor = _GeneralFunction("floor")
-MathModule.frexp = _GeneralFunction("frexp")
-MathModule.log10 = _GeneralFunction("log10")
-MathModule.rad = _GeneralFunction("rad")
-MathModule.round = _GeneralFunction("round")
-MathModule.sign = _GeneralFunction("sign")
-MathModule.sin = _GeneralFunction("sin")
-MathModule.sinh = _GeneralFunction("sinh")
-MathModule.sqrt = _GeneralFunction("sqrt")
-MathModule.tan = _GeneralFunction("tan")
-MathModule.tanh = _GeneralFunction("tanh")
-MathModule.abs = _GeneralFunction("abs")
-MathModule.acos = _GeneralFunction("acos")
-MathModule.asin = _GeneralFunction("asin")
-MathModule.atan = _GeneralFunction("atan")
+MathModule.ceil = _GetModifiedMathFunction("ceil")
+MathModule.cos = _GetModifiedMathFunction("cos")
+MathModule.cosh = _GetModifiedMathFunction("cosh")
+MathModule.deg = _GetModifiedMathFunction("deg")
+MathModule.exp = _GetModifiedMathFunction("exp")
+MathModule.floor = _GetModifiedMathFunction("floor")
+MathModule.frexp = _GetModifiedMathFunction("frexp")
+MathModule.log10 = _GetModifiedMathFunction("log10")
+MathModule.rad = _GetModifiedMathFunction("rad")
+MathModule.round = _GetModifiedMathFunction("round")
+MathModule.sign = _GetModifiedMathFunction("sign")
+MathModule.sin = _GetModifiedMathFunction("sin")
+MathModule.sinh = _GetModifiedMathFunction("sinh")
+MathModule.sqrt = _GetModifiedMathFunction("sqrt")
+MathModule.tan = _GetModifiedMathFunction("tan")
+MathModule.tanh = _GetModifiedMathFunction("tanh")
+MathModule.abs = _GetModifiedMathFunction("abs")
+MathModule.acos = _GetModifiedMathFunction("acos")
+MathModule.asin = _GetModifiedMathFunction("asin")
+MathModule.atan = _GetModifiedMathFunction("atan")
 
 MathModule.acosh = function(...)
     local Result = {}
