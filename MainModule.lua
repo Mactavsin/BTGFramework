@@ -623,7 +623,6 @@ function GetAsync(URL)
 	if Success == true then
 		return Data
 	else
-		print(Data)
 		return GetAsync(URL)
 	end
 end
