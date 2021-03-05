@@ -5,53 +5,53 @@ local ObjectModule = {}
 local BlankObject = Instance.new("Folder")
 
 --//Private Functions
-function _GetAnchestors(Object, Result, IsDescending)
+function _GetAncestors(Object, Result, IsDescending)
     if Object ~= game and Object ~= nil then 
         if IsDescending == true then 
             table.insert(Result, 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestors(Object.Parent, Result, IsDescending)
         else
             table.insert(Result, #Result + 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestors(Object.Parent, Result, IsDescending)
         end
     end
     return Result
 end
 
-function _GetAnchestorsOfName(Object, Name, Result, IsDescending)
+function _GetAncestorsOfName(Object, Name, Result, IsDescending)
     if Object ~= game and Object ~= nil and Object.Name == Name then 
         if IsDescending == true then 
             table.insert(Result, 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestorsOfName(Object.Parent, Name, Result, IsDescending)
         else
             table.insert(Result, #Result + 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestorsOfName(Object.Parent, Name, Result, IsDescending)
         end
     end
     return Result
 end
 
-function _GetAnchestorsOfClass(Object, ClassName, Result, IsDescending)
+function _GetAncestorsOfClass(Object, ClassName, Result, IsDescending)
     if Object ~= game and Object ~= nil and Object.ClassName == ClassName then 
         if IsDescending == true then 
             table.insert(Result, 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestorsOfClass(Object.Parent, ClassName, Result, IsDescending)
         else
             table.insert(Result, #Result + 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestorsOfClass(Object.Parent, ClassName,  Result, IsDescending)
         end
     end
     return Result
 end
 
-function _GetAnchestorsWhichIsA(Object, ClassName, Result, IsDescending)
+function _GetAncestorsWhichAreA(Object, ClassName, Result, IsDescending)
     if Object ~= game and Object ~= nil and Object:IsA(ClassName) == true then 
         if IsDescending == true then 
             table.insert(Result, 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestorsWhichAreA(Object.Parent, ClassName, Result, IsDescending)
         else
             table.insert(Result, #Result + 1, Object.Parent)
-            return _GetAnchestors(Object.Parent, Result, IsDescending)
+            return _GetAncestorsWhichAreA(Object.Parent, ClassName, Result, IsDescending)
         end
     end
     return Result
@@ -81,19 +81,18 @@ ObjectModule.IsDescendantOf = BlankObject.IsDescendantOf
 ObjectModule.SetAttribute = BlankObject.SetAttribute
 ObjectModule.WaitForChild = BlankObject.WaitForChild
 
-function ObjectModule.ClearChildrenOfName(Object, Name, IsRecursive)
-    IsRecursive = IsRecursive or false
+ObjectModule.ClearChildrenOfName = function(Object, Name, IsRecursive)
+    IsRecursive = (type(IsRecursive) == "boolean" and IsRecursive) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.ClearChildrenOfName function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(Name) == "string", string.format("BTGFramework.LibrariesService.Object.ClearChildrenOfName function error: Argument 2 expected string; got %s.", type(Name)))
-    assert(type(IsRecursive) == "boolean", string.format("BTGFramework.LibrariesService.Object.ClearChildrenOfName function error: Argument 3 expected boolean, nil; got %s.", type(IsRecursive)))
     if IsRecursive == true then 
-        for Index, Value in pairs(Object:GetDescendants()) do 
+        for Index, Value in ipairs(Object:GetDescendants()) do 
             if Value.Name == Name then 
                 Value:Destroy()
             end
         end
     else
-        for Index, Value in pairs(Object:GetChildren()) do 
+        for Index, Value in ipairs(Object:GetChildren()) do 
             if Value.Name == Name then 
                 Value:Destroy()
             end
@@ -101,19 +100,18 @@ function ObjectModule.ClearChildrenOfName(Object, Name, IsRecursive)
     end
 end
 
-function ObjectModule.ClearChildrenOfClass(Object, ClassName, IsRecursive)
-    IsRecursive = IsRecursive or false
+ObjectModule.ClearChildrenOfClass = function(Object, ClassName, IsRecursive)
+    IsRecursive = (type(IsRecursive) == "boolean" and IsRecursive) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.ClearChildrenOfClass function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.ClearChildrenOfClass function error: Argument 2 expected string; got %s.", type(ClassName)))
-    assert(type(IsRecursive) == "boolean", string.format("BTGFramework.LibrariesService.Object.ClearChildrenOfClass function error: Argument 3 expected boolean, nil; got %s.", type(IsRecursive)))
     if IsRecursive == true then 
-        for Index, Value in pairs(Object:GetDescendants()) do 
+        for Index, Value in ipairs(Object:GetDescendants()) do 
             if Value.ClassName == ClassName then 
                 Value:Destroy()
             end
         end
     else
-        for Index, Value in pairs(Object:GetChildren()) do 
+        for Index, Value in ipairs(Object:GetChildren()) do 
             if Value.ClassName == ClassName then 
                 Value:Destroy()
             end
@@ -121,19 +119,18 @@ function ObjectModule.ClearChildrenOfClass(Object, ClassName, IsRecursive)
     end
 end
 
-function ObjectModule.ClearChildrenWhichAreA(Object, ClassName, IsRecursive)
-    IsRecursive = IsRecursive or false
+ObjectModule.ClearChildrenWhichAreA = function(Object, ClassName, IsRecursive)
+    IsRecursive = (type(IsRecursive) == "boolean" and IsRecursive) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.ClearChildrenWhichAreA function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.ClearChildrenWhichAreA function error: Argument 2 expected string; got %s.", type(ClassName)))
-    assert(type(IsRecursive) == "boolean", string.format("BTGFramework.LibrariesService.Object.ClearChildrenWhichAreA function error: Argument 3 expected boolean, nil; got %s.", type(IsRecursive)))
     if IsRecursive == true then 
-        for Index, Value in pairs(Object:GetDescendants()) do 
+        for Index, Value in ipairs(Object:GetDescendants()) do 
             if Value:IsA(ClassName) == true then 
                 Value:Destroy()
             end
         end
     else
-        for Index, Value in pairs(Object:GetChildren()) do 
+        for Index, Value in ipairs(Object:GetChildren()) do 
             if Value:IsA(ClassName) == true then 
                 Value:Destroy()
             end
@@ -141,15 +138,14 @@ function ObjectModule.ClearChildrenWhichAreA(Object, ClassName, IsRecursive)
     end
 end
 
-function ObjectModule.FindFirstChildOfClass(Object, ClassName, IsRecursive)
-    IsRecursive = IsRecursive or false
+ObjectModule.FindFirstChildOfClass = function(Object, ClassName, IsRecursive)
+    IsRecursive = (type(IsRecursive) == "boolean" and IsRecursive) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.FindFirstChildOfClass function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.FindFirstChildOfClass function error: Argument 2 expected string; got %s.", type(ClassName)))
-    assert(type(IsRecursive) == "boolean", string.format("BTGFramework.LibrariesService.Object.FindFirstChildOfClass function error: Argument 3 expected boolean, nil; got %s.", type(IsRecursive)))
     if IsRecursive == false then 
         return Object:FindFirstChildOfClass(ClassName)
     else
-        for Index, Value in pairs(Object:GetDescendants()) do 
+        for Index, Value in ipairs(Object:GetDescendants()) do 
             if Value.ClassName == ClassName then 
                 return Value
             end
@@ -158,46 +154,38 @@ function ObjectModule.FindFirstChildOfClass(Object, ClassName, IsRecursive)
     end
 end
 
-function ObjectModule.GetAncestors(Object, IsDescending) 
-    IsDescending = IsDescending or false
+ObjectModule.GetAncestors = function(Object, IsDescending) 
+    IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestors function error: Argument 1 expected Instance; got %s.", typeof(Object)))
-    assert(type(IsDescending) == "boolean", string.format("BTGFramework.LibrariesService.Object.GetAncestors function error: Argument 2 expected boolean, nil; got %s.", type(IsDescending)))
-    local Result = {}
-    return _GetAnchestors(Object, Result, IsDescending)
+    return _GetAncestors(Object, {}, IsDescending)
 end
 
-function ObjectModule.GetAncestorsOfName(Object, Name, IsDescending) 
-    IsDescending = IsDescending or false
+ObjectModule.GetAncestorsOfName = function(Object, Name, IsDescending) 
+    IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfName function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(Name) == "string", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfName function error: Argument 2 expected string; got %s.", type(Name)))
-    assert(type(IsDescending) == "boolean", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfName function error: Argument 3 expected boolean, nil; got %s.", type(IsDescending)))
-    local Result = {}
-    return _GetAnchestorsOfName(Object, Name ,Result, IsDescending)
+    return _GetAncestorsOfName(Object, Name, {}, IsDescending)
 end
 
-function ObjectModule.GetAncestorsOfClass(Object, ClassName, IsDescending) 
-    IsDescending = IsDescending or false
+ObjectModule.GetAncestorsOfClass = function(Object, ClassName, IsDescending) 
+    IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfClass function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfClass function error: Argument 2 expected string; got %s.", type(ClassName)))
-    assert(type(IsDescending) == "boolean", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfClass function error: Argument 3 expected boolean, nil; got %s.", type(IsDescending)))
-    local Result = {}
-    return _GetAnchestorsOfClass(Object, ClassName, Result, IsDescending)
+    return _GetAncestorsOfClass(Object, ClassName, {}, IsDescending)
 end
 
-function ObjectModule.GetAncestorsWhichAreA(Object, ClassName, IsDescending) 
-    IsDescending = IsDescending or false
+ObjectModule.GetAncestorsWhichAreA = function(Object, ClassName, IsDescending) 
+    IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestorsWhichAreA function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetAncestorsWhichAreA function error: Argument 2 expected string; got %s.", type(ClassName)))
-    assert(type(IsDescending) == "boolean", string.format("BTGFramework.LibrariesService.Object.GetAncestorsWhichAreA function error: Argument 3 expected boolean, nil; got %s.", type(IsDescending)))
-    local Result = {}
-    return _GetAnchestorsOfClass(Object, ClassName, Result, IsDescending)
+    return _GetAncestorsWhichAreA(Object, ClassName, {}, IsDescending)
 end
 
-function ObjectModule.GetChildrenOfName(Object, Name)
+ObjectModule.GetChildrenOfName = function(Object, Name)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetChildrenOfName function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(Name) == "string", string.format("BTGFramework.LibrariesService.Object.GetChildrenOfName function error: Argument 2 expected string; got %s.", type(Name)))
     local Result = {}
-    for Index, Value in pairs(Object:GetChildren()) do 
+    for Index, Value in ipairs(Object:GetChildren()) do 
         if Value.Name == Name then 
             table.insert(Result, #Result + 1, Value)
         end
@@ -205,11 +193,11 @@ function ObjectModule.GetChildrenOfName(Object, Name)
     return Result
 end
 
-function ObjectModule.GetChildrenOfClass(Object, ClassName)
+ObjectModule.GetChildrenOfClass = function(Object, ClassName)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetChildrenOfClass function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetChildrenOfClass function error: Argument 2 expected string; got %s.", type(ClassName)))
     local Result = {}
-    for Index, Value in pairs(Object:GetChildren()) do 
+    for Index, Value in ipairs(Object:GetChildren()) do 
         if Value.ClassName == ClassName then 
             table.insert(Result, #Result + 1, Value)
         end
@@ -217,11 +205,11 @@ function ObjectModule.GetChildrenOfClass(Object, ClassName)
     return Result
 end
 
-function ObjectModule.GetChildrenWhichAreA(Object, ClassName)
+ObjectModule.GetChildrenWhichAreA = function(Object, ClassName)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetChildrenWhichAreA function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetChildrenWhichAreA function error: Argument 2 expected string; got %s.", type(ClassName)))
     local Result = {}
-    for Index, Value in pairs(Object:GetChildren()) do 
+    for Index, Value in ipairs(Object:GetChildren()) do 
         if Value:IsA(ClassName) == true then 
             table.insert(Result, #Result + 1, Value)
         end
@@ -229,11 +217,11 @@ function ObjectModule.GetChildrenWhichAreA(Object, ClassName)
     return Result
 end
 
-function ObjectModule.GetDescendantsOfName(Object, Name)
+ObjectModule.GetDescendantsOfName = function(Object, Name)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetDescendantsOfName function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(Name) == "string", string.format("BTGFramework.LibrariesService.Object.GetDescendantsOfName function error: Argument 2 expected string; got %s.", type(Name)))
     local Result = {}
-    for Index, Value in pairs(Object:GetDescendants()) do 
+    for Index, Value in ipairs(Object:GetDescendants()) do 
         if Value.Name == Name then 
             table.insert(Result, #Result + 1, Value)
         end
@@ -241,11 +229,11 @@ function ObjectModule.GetDescendantsOfName(Object, Name)
     return Result
 end
 
-function ObjectModule.GetDescendantsOfClass(Object, ClassName)
+ObjectModule.GetDescendantsOfClass = function(Object, ClassName)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetDescendantsOfClass function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetDescendantsOfClass function error: Argument 2 expected string; got %s.", type(ClassName)))
     local Result = {}
-    for Index, Value in pairs(Object:GetDescendants()) do 
+    for Index, Value in ipairs(Object:GetDescendants()) do 
         if Value.ClassName == ClassName then 
             table.insert(Result, #Result + 1, Value)
         end
@@ -253,11 +241,11 @@ function ObjectModule.GetDescendantsOfClass(Object, ClassName)
     return Result
 end
 
-function ObjectModule.GetDescendantsWhichAreA(Object, ClassName)
+ObjectModule.GetDescendantsWhichAreA = function(Object, ClassName)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetDescendantsWhichAreA function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetDescendantsWhichAreA function error: Argument 2 expected string; got %s.", type(ClassName)))
     local Result = {}
-    for Index, Value in pairs(Object:GetDescendants()) do 
+    for Index, Value in ipairs(Object:GetDescendants()) do 
         if Value:IsA(ClassName) == true then 
             table.insert(Result, #Result + 1, Value)
         end
@@ -265,7 +253,7 @@ function ObjectModule.GetDescendantsWhichAreA(Object, ClassName)
     return Result
 end
 
-function ObjectModule.WaitForChildOfClass(Object, ClassName)
+ObjectModule.WaitForChildOfClass = function(Object, ClassName)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.WaitForChildOfClass function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.WaitForChildOfClass function error: Argument 2 expected string; got %s.", type(ClassName)))
     local Result = Object:FindFirstChildOfClass(ClassName)
@@ -281,7 +269,7 @@ function ObjectModule.WaitForChildOfClass(Object, ClassName)
     end
 end
 
-function ObjectModule.WaitForChildWhichIsA(Object, ClassName)
+ObjectModule.WaitForChildWhichIsA = function(Object, ClassName)
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.WaitForChildWhichIsA function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.WaitForChildWhichIsA function error: Argument 2 expected string; got %s.", type(ClassName)))
     local Result = Object:FindFirstChildWhichIsA(ClassName)
