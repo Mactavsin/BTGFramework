@@ -8,10 +8,10 @@ local BlankObject = Instance.new("Folder")
 function _GetAncestors(Object, Result, IsDescending)
     if Object ~= game and Object ~= nil then 
         if IsDescending == true then 
-            table.insert(Result, 1, Object.Parent)
+            table.insert(Result, 1, Object)
             return _GetAncestors(Object.Parent, Result, IsDescending)
         else
-            table.insert(Result, #Result + 1, Object.Parent)
+            table.insert(Result, #Result + 1, Object)
             return _GetAncestors(Object.Parent, Result, IsDescending)
         end
     end
@@ -21,10 +21,10 @@ end
 function _GetAncestorsOfName(Object, Name, Result, IsDescending)
     if Object ~= game and Object ~= nil and Object.Name == Name then 
         if IsDescending == true then 
-            table.insert(Result, 1, Object.Parent)
+            table.insert(Result, 1, Object)
             return _GetAncestorsOfName(Object.Parent, Name, Result, IsDescending)
         else
-            table.insert(Result, #Result + 1, Object.Parent)
+            table.insert(Result, #Result + 1, Object)
             return _GetAncestorsOfName(Object.Parent, Name, Result, IsDescending)
         end
     end
@@ -34,10 +34,10 @@ end
 function _GetAncestorsOfClass(Object, ClassName, Result, IsDescending)
     if Object ~= game and Object ~= nil and Object.ClassName == ClassName then 
         if IsDescending == true then 
-            table.insert(Result, 1, Object.Parent)
+            table.insert(Result, 1, Object)
             return _GetAncestorsOfClass(Object.Parent, ClassName, Result, IsDescending)
         else
-            table.insert(Result, #Result + 1, Object.Parent)
+            table.insert(Result, #Result + 1, Object)
             return _GetAncestorsOfClass(Object.Parent, ClassName,  Result, IsDescending)
         end
     end
@@ -47,10 +47,10 @@ end
 function _GetAncestorsWhichAreA(Object, ClassName, Result, IsDescending)
     if Object ~= game and Object ~= nil and Object:IsA(ClassName) == true then 
         if IsDescending == true then 
-            table.insert(Result, 1, Object.Parent)
+            table.insert(Result, 1, Object)
             return _GetAncestorsWhichAreA(Object.Parent, ClassName, Result, IsDescending)
         else
-            table.insert(Result, #Result + 1, Object.Parent)
+            table.insert(Result, #Result + 1, Object)
             return _GetAncestorsWhichAreA(Object.Parent, ClassName, Result, IsDescending)
         end
     end
@@ -157,28 +157,28 @@ end
 ObjectModule.GetAncestors = function(Object, IsDescending) 
     IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestors function error: Argument 1 expected Instance; got %s.", typeof(Object)))
-    return _GetAncestors(Object, {}, IsDescending)
+    return _GetAncestors(Object.Parent, {}, IsDescending)
 end
 
 ObjectModule.GetAncestorsOfName = function(Object, Name, IsDescending) 
     IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfName function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(Name) == "string", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfName function error: Argument 2 expected string; got %s.", type(Name)))
-    return _GetAncestorsOfName(Object, Name, {}, IsDescending)
+    return _GetAncestorsOfName(Object.Parent, Name, {}, IsDescending)
 end
 
 ObjectModule.GetAncestorsOfClass = function(Object, ClassName, IsDescending) 
     IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfClass function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetAncestorsOfClass function error: Argument 2 expected string; got %s.", type(ClassName)))
-    return _GetAncestorsOfClass(Object, ClassName, {}, IsDescending)
+    return _GetAncestorsOfClass(Object.Parent, ClassName, {}, IsDescending)
 end
 
 ObjectModule.GetAncestorsWhichAreA = function(Object, ClassName, IsDescending) 
     IsDescending = (type(IsDescending) == "boolean" and IsDescending) or false
     assert(typeof(Object) == "Instance", string.format("BTGFramework.LibrariesService.Object.GetAncestorsWhichAreA function error: Argument 1 expected Instance; got %s.", typeof(Object)))
     assert(type(ClassName) == "string", string.format("BTGFramework.LibrariesService.Object.GetAncestorsWhichAreA function error: Argument 2 expected string; got %s.", type(ClassName)))
-    return _GetAncestorsWhichAreA(Object, ClassName, {}, IsDescending)
+    return _GetAncestorsWhichAreA(Object.Parent, ClassName, {}, IsDescending)
 end
 
 ObjectModule.GetChildrenOfName = function(Object, Name)
